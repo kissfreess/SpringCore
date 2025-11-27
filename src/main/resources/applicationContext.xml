@@ -8,6 +8,37 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:component-scan base-package="Test"/>
+    <context:property-placeholder location="classpath:musicPlayer.properties"/>
+
+    <bean id="rockMusicBean"
+        class="Test.RockMusic"
+        init-method="init"
+        destroy-method="destroy"
+        factory-method="getInstance"
+        scope="prototype">
+    </bean>
+
+    <bean id="classicalMusicBean"
+          class="Test.ClassicalMusic">
+    </bean>
+
+    <bean id="rapMusicBean"
+          class="Test.RapMusic">
+    </bean>
+
+    <util:list id="musicList">
+        <ref bean="rockMusicBean"/>
+        <ref bean="classicalMusicBean"/>
+        <ref bean="rapMusicBean"/>
+    </util:list>
+
+
+    <bean id="musicPlayerBean"
+          class="Test.MusicPlayer">
+        <property name="musicList" ref="musicList"/>
+        <property name="name" value="${musicPlayer.name}"/>
+        <property name="volume" value="${musicPlayer.volume}"/>
+    </bean>
+
 
 </beans>
